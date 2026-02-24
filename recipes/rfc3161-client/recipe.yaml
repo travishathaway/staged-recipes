@@ -28,6 +28,7 @@ requirements:
     - ${{ compiler('rust') }}
     - cargo-bundle-licenses
     - maturin ${{ maturin_version }}.*
+    - make
   host:
     - maturin ${{ maturin_version }}.*
     - pip
