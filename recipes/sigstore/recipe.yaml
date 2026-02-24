@@ -2,7 +2,6 @@ schema_version: 1
 
 context:
   version: "4.2.0"
-  python_min: "3.10"
 
 package:
   name: sigstore
@@ -14,7 +13,6 @@ source:
 
 build:
   number: 0
-  noarch: python
   script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   python:
     entry_points:
@@ -22,11 +20,11 @@ build:
 
 requirements:
   host:
-    - python ${{ python_min }}.*
+    - python
     - flit-core >=3.2,<4
     - pip
   run:
-    - python >=${{ python_min }}
+    - python
     - cryptography >=42,<47
     - id >=1.1.0
     - if: match(python, "<3.11")
@@ -46,7 +44,6 @@ requirements:
 
 tests:
   - python:
-      python_version: ${{ python_min }}.*
       imports:
         - sigstore
       pip_check: true
