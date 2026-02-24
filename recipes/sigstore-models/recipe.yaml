@@ -1,7 +1,8 @@
 schema_version: 1
 
 context:
-  version: 0.0.6
+  version: "0.0.6"
+  python_min: "3.10"
 
 package:
   name: sigstore-models
@@ -18,16 +19,17 @@ build:
 
 requirements:
   host:
-    - python >=3.10
+    - python ${ {python_min }}.*
     - uv-build >=0.9.0,<0.10
     - pip
   run:
-    - python >=3.10
+    - python >=${{ python_min }}
     - pydantic >=2.12
-    - typing_extensions >=4.14.1
+    - typing-extensions >=4.14.1
 
 tests:
   - python:
+      python_version: ${{ python_min }}.*
       imports:
         - sigstore_models
       pip_check: true

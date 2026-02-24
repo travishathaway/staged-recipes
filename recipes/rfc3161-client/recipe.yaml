@@ -1,7 +1,9 @@
 schema_version: 1
 
 context:
-  version: 1.0.5
+  maturin_version: "1"
+  version: "1.0.5"
+  python_min: "3.10"
 
 package:
   name: rfc3161-client
@@ -13,27 +15,40 @@ source:
 
 build:
   number: 0
-  noarch: python
-  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script:
+    - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+    - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
 requirements:
+  build:
+    - python
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib('c') }}
+    - ${{ compiler('rust') }}
+    - cargo-bundle-licenses
+    - maturin ${{ maturin_version }}.*
   host:
-    - python >=3.9
-    - maturin >=1.7,<2.0
+    - maturin ${{ maturin_version }}.*
     - pip
+    - python ${{ python_min}}.*
   run:
-    - python >=3.9
+    - python >=${{ python_min }}
     - cryptography >=43,<47
 
 tests:
   - python:
+      python_version: ${{ python_min }}.*
       imports:
         - rfc3161_client
       pip_check: true
 
 about:
   license: Apache-2.0
-  license_file: LICENSE
+  license_file:
+    - LICENSE
+    - THIRDPARTY.yml
   homepage: https://pypi.org/project/rfc3161-client
   repository: https://github.com/trailofbits/rfc3161-client
   documentation: https://trailofbits.github.io/rfc3161-client/

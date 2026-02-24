@@ -1,7 +1,8 @@
 schema_version: 1
 
 context:
-  version: 0.1.4
+  version: "0.1.4"
+  python_min: "3.10""
 
 package:
   name: rfc8785
@@ -18,14 +19,15 @@ build:
 
 requirements:
   host:
-    - python >=3.8
+    - python ${{ python_min }}.*
     - flit-core >=3.5,<4
     - pip
   run:
-    - python >=3.8
+    - python >=${{ python_min }}
 
 tests:
   - python:
+      python_version: ${{ python_min }}.*
       imports:
         - rfc8785
       pip_check: true
